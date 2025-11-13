@@ -6,8 +6,8 @@ package Config is
 
    --Task priorities (the higher number => the higher priority)
    Priority_Think : constant := 2;  --priority
-   Priority_Sense : constant := 1;  --
-   Priority_Act   : constant := 3;  --
+   Priority_Sense : constant := 3;  --
+   Priority_Act   : constant := 1;  --
 
    --Decision thresholds (in meters, of course)
    Obstacle_Threshold_m : constant := 0.25;
