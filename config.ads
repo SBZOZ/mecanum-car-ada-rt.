@@ -5,9 +5,9 @@ package Config is
    Act_Period_ms   : constant := 40;  --this is stable actuation, but we can possibly reduce it to 20–30 ms after testing
 
    --Task priorities (the higher number => the higher priority)
-   Priority_Think : constant := 3;  --priority
-   Priority_Sense : constant := 2;  --
-   Priority_Act   : constant := 1;  --
+   Priority_Think : constant := 2;  --priority
+   Priority_Sense : constant := 1;  --
+   Priority_Act   : constant := 3;  --
 
    --Decision thresholds (in meters, of course)
    Obstacle_Threshold_m : constant := 0.25;
