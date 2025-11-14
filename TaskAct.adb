@@ -1,10 +1,10 @@
-with Ada.Real_Time; use Ada.Real_Time;
-with MyMotorDriver;
+with Ada.Real_Time;    use Ada.Real_Time;
+with MyMotorDriver;    use MyMotorDriver;
 with MicroBit.Console; use MicroBit.Console;
 with MicroBit.MotorDriver; use MicroBit.MotorDriver;
+with Config;
 
 package body TaskAct is
-
    task body Act is
       myClock : Time;
       Dir     : MicroBit.MotorDriver.Directions;
@@ -12,23 +12,20 @@ package body TaskAct is
       loop
          myClock := Clock;
 
-         --this is where the direction are made based on the readings from protected object
          Dir := MyMotorDriver.MotorDriver.GetDirection;
 
-         --applying the direction to the motors
          case Dir is
-            when Forward       => MyMotorDriver.DriveForward;
-            when Backward      => MyMotorDriver.DriveBackward;
-            when Left          => MyMotorDriver.TurnLeft;
-            when Right         => MyMotorDriver.TurnRight;
-            when Stop          => MyMotorDriver.Stop;
-            when others        => MyMotorDriver.Stop;
+            when Forward       => DriveForward;
+            when Backward      => DriveBackward;
+            when Left          => TurnLeft;
+            when Right         => TurnRight;
+            when Stop          => Stop;
+            when others        => Stop;  --catch all other directions (as defauly for safety)
          end case;
-         --again, tried to always debug to see what the issue is
-         Put_Line ("Acting on: " & MicroBit.MotorDriver.Directions'Image (Dir));
 
-         delay until myClock + Milliseconds (40);
+         Put_Line ("Acting on: " & Directions'Image (Dir));
+
+         delay until myClock + Milliseconds (Config.Act_Period_ms);
       end loop;
    end Act;
-
 end TaskAct;
