@@ -3,6 +3,7 @@ with MyBrain;
 with MyMotorDriver;
 with MicroBit.Console; use MicroBit.Console;
 with MicroBit.MotorDriver; use MicroBit.MotorDriver;
+with Config;
 
 package body TaskThink is
 
@@ -14,30 +15,41 @@ package body TaskThink is
       loop
          myClock := Clock;
 
-         --reads the sensor values from the protected object, which again is written from the sense task
+         -- Read sensor values from the protected object
          MyBrain.SensorData_Instance.GetMeasurements (Dist_Left, Dist_Right);
 
-         --this is where the decision logic is, based on the thresholds defined in config.ads
-         if Dist_Left > 20 and Dist_Right > 20 then
-            MyMotorDriver.MotorDriver.SetDirection (Forward);
-         elsif Dist_Left < 10 and Dist_Right < 10 then
-            MyMotorDriver.MotorDriver.SetDirection (Backward);
-         elsif Dist_Left < 10 or Dist_Right < 10 then
-            MyMotorDriver.MotorDriver.SetDirection (Stop);
-         elsif Dist_Left < Dist_Right then
-            MyMotorDriver.MotorDriver.SetDirection (Left);
-         else
-            MyMotorDriver.MotorDriver.SetDirection (Right);
-         end if;
+         -- Check how old the sensor data is
+         declare
+            Age : Duration := To_Duration (Clock - MyBrain.SensorData_Instance.Last_Update);
+         begin
+            if Age > Duration (2 * Config.Think_Period_ms) / 1000.0 then
+               -- Data too old, default to Stop
+               MyMotorDriver.MotorDriver.SetDirection (Stop);
+            else
+               -- Normal decision logic based on thresholds
+               if Dist_Left > 20 and Dist_Right > 20 then
+                  MyMotorDriver.MotorDriver.SetDirection (Forward);
+               elsif Dist_Left < 10 and Dist_Right < 10 then
+                  MyMotorDriver.MotorDriver.SetDirection (Backward);
+               elsif Dist_Left < 10 or Dist_Right < 10 then
+                  MyMotorDriver.MotorDriver.SetDirection (Stop);
+               elsif Dist_Left < Dist_Right then
+                  MyMotorDriver.MotorDriver.SetDirection (Left);
+               else
+                  MyMotorDriver.MotorDriver.SetDirection (Right);
+               end if;
+            end if;
+         end;
 
-         --I also included a debug print here to see the sensor values and the decision made
+         -- Debug prints
          Put_Line ("Left=" & Distance_CM'Image(Dist_Left) &
-                  " Right=" & Distance_CM'Image(Dist_Right));
+                   " Right=" & Distance_CM'Image(Dist_Right));
 
          Dir := MyMotorDriver.MotorDriver.GetDirection;
          Put_Line ("Decision: " & MicroBit.MotorDriver.Directions'Image (Dir));
 
-         delay until myClock + Milliseconds (100); --(100 ms period)
+         -- Enforce periodicity
+         delay until myClock + Milliseconds (Config.Think_Period_ms);
       end loop;
    end Think;
 
