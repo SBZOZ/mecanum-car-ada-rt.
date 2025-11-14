@@ -1,34 +1,38 @@
-
+with HAL;                  use HAL;
 with MicroBit.IOsForTasking; use MicroBit.IOsForTasking;
-with MicroBit.MotorDriver;  use MicroBit.MotorDriver;
+with MicroBit.MotorDriver;   use MicroBit.MotorDriver;
 
 package body MyMotorDriver is
 
-   Speed : constant Analog_Value := 512; --between 0 and 1023 as defned before s
+   --defining the speed levels using UInt12 (0 .. 4095)
+   Speed_Max    : constant UInt12 := 4095;
+   Speed_Fast   : constant UInt12 := 3200;
+   Speed_Medium : constant UInt12 := 2600;
+   Speed_Slow   : constant UInt12 := 2000;
 
    procedure DriveForward is
    begin
-      MicroBit.MotorDriver.Drive(Forward,(4095,4095,4095,4095)); --max speed
+      Drive (Forward, (Speed_Max, Speed_Max, Speed_Max, Speed_Max));
    end DriveForward;
 
    procedure DriveBackward is
    begin
-      MicroBit.MotorDriver.Drive(Backward,(4095,4095,4095,4095));
+      Drive (Backward, (Speed_Max, Speed_Max, Speed_Max, Speed_Max));
    end DriveBackward;
 
    procedure TurnLeft is
    begin
-      MicroBit.MotorDriver.Drive(Left,(4095,4095,4095,4095));
+      Drive (Left, (Speed_Max, Speed_Max, Speed_Max, Speed_Max));
    end TurnLeft;
 
    procedure TurnRight is
    begin
-      MicroBit.MotorDriver.Drive(Right,(4095,4095,4095,4095));
+      Drive (Right, (Speed_Max, Speed_Max, Speed_Max, Speed_Max));
    end TurnRight;
 
    procedure Stop is
    begin
-      MicroBit.MotorDriver.Drive(Stop,(0,0,0,0));
+      Drive (Stop, (0, 0, 0, 0));
    end Stop;
 
    protected body MotorDriver is
