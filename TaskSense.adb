@@ -20,8 +20,8 @@ package body TaskSense is
          Dist_Left  := MyBrain.Distance_CM (Sensor_Left.Read);
          Dist_Right := MyBrain.Distance_CM (Sensor_Right.Read);
 
-         Put_Line ("Sense: L=" & Distance_CM'Image (Dist_Left) &
-                   " R=" & Distance_CM'Image (Dist_Right));
+         Put_Line ("Sense: L=" & Integer'Image (Integer (Dist_Left)) &
+                  " R=" & Integer'Image (Integer (Dist_Right)));
 
          MyBrain.SensorData_Instance.SetMeasurements (Dist_Left, Dist_Right);
 
