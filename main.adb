@@ -10,9 +10,8 @@ with TaskAct;
 procedure Main is
 begin
    Put_Line ("Car system starting...");
-    null;
 
-   --the tasks run concurrently automatically
+   -- Tasks run concurrently automatically
    loop
       delay until Clock + Milliseconds (1000);
    end loop;
