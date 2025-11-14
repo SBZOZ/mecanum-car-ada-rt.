@@ -1,8 +1,6 @@
-with MyBrain; use MyBrain;
+with MyMotorDriver; use MyMotorDriver;
+with Config;
 
-package TaskSense is
-   task Sense with Priority => 2;  
-end TaskSense;
-
-
-
+package TaskAct is
+   task Act with Priority => Config.Priority_Act;
+end TaskAct;
