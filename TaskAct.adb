@@ -1,7 +1,7 @@
-with Ada.Real_Time;    use Ada.Real_Time;
-with MyMotorDriver;    use MyMotorDriver;
-with MicroBit.Console; use MicroBit.Console;
-with MicroBit.MotorDriver; use MicroBit.MotorDriver;
+with Ada.Real_Time;            use Ada.Real_Time;
+with MyMotorDriver;            use MyMotorDriver;
+with MicroBit.Console;         use MicroBit.Console;
+with MicroBit.MotorDriver;     use MicroBit.MotorDriver;
 with Config;
 
 package body TaskAct is
@@ -20,7 +20,7 @@ package body TaskAct is
             when Left          => TurnLeft;
             when Right         => TurnRight;
             when Stop          => Stop;
-            when others        => Stop;  --catch all other directions (as defauly for safety)
+            when others        => Stop;
          end case;
 
          Put_Line ("Acting on: " & Directions'Image (Dir));
