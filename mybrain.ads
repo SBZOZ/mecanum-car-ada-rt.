@@ -8,8 +8,9 @@ package MyBrain is
       procedure GetMeasurements (Left, Right : out Distance_CM);
       function Last_Update return Ada.Real_Time.Time;
    private
-      Left_Dist   : Distance_CM := 0;
-      Right_Dist  : Distance_CM := 0;
+      -- Initialize to safe "far" values to avoid startup STOP
+      Left_Dist   : Distance_CM := 400;
+      Right_Dist  : Distance_CM := 400;
       Update_Time : Ada.Real_Time.Time := Ada.Real_Time.Clock;
    end SensorData;
 
