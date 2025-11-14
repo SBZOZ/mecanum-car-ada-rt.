@@ -6,14 +6,25 @@ with Ada.Real_Time; use Ada.Real_Time;
 with MicroBit; use MicroBit;
 
 procedure Main is
-   package Sensor is new MicroBit.Ultrasonic (MB_P14, MB_P16); -- adjust pins to your wiring
-   Distance : Integer;
+   --this is the instantiate of the two sensors on different pins
+   package Sensor_Left  is new MicroBit.Ultrasonic (MB_P13, MB_P1);
+   package Sensor_Right is new MicroBit.Ultrasonic (MB_P12, MB_P10);
+
+   Distance_Left  : Integer;
+   Distance_Right : Integer;
 begin
---testing if the loop works
-   Put_Line ("Sensor test starting...");
+   Put_Line ("Starting...");
+
    loop
-      Distance := Sensor.Read;
-      Put_Line ("Distance=" & Integer'Image (Distance));
+      --this reads both sensors
+      Distance_Left  := Sensor_Left.Read;
+      Distance_Right := Sensor_Right.Read;
+
+      --this prints the
+      Put_Line ("Left="  & Integer'Image (Distance_Left) &
+                " Right=" & Integer'Image (Distance_Right));
+
+      --the delay for 200 ms
       delay until Clock + Milliseconds (200);
    end loop;
 end Main;
