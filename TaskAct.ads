@@ -1,6 +1,6 @@
 with MyMotorDriver; use MyMotorDriver;
+with Config;
 
 package TaskAct is
-   task Act with Priority => 1;
+   task Act with Priority => Config.Priority_Act;
 end TaskAct;
-
