@@ -1,7 +1,6 @@
-with MyBrain;
-with MyMotorDriver;
+with MyBrain; use MyBrain;
 with Config;
 
-package TaskThink is
-   task Think with Priority => Config.Priority_Think;
-end TaskThink;
+package TaskSense is
+   task Sense with Priority => Config.Priority_Sense;
+end TaskSense;
