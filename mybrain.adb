@@ -1,23 +1,28 @@
-with Ada.Real_Time;
+package Config is
+   -- Periods (in milliseconds)
+   Sense_Period_ms : constant := 200;
+   Think_Period_ms : constant := 100;
+   Act_Period_ms   : constant := 40;
 
-package body MyBrain is
-   protected body SensorData is
-      procedure SetMeasurements (Left, Right : Distance_CM) is
-      begin
-         Left_Dist   := Left;
-         Right_Dist  := Right;
-         Update_Time := Ada.Real_Time.Clock;
-      end SetMeasurements;
+   -- Priorities (tasks)
+   Priority_Think : constant := 3;
+   Priority_Sense : constant := 2;
+   Priority_Act   : constant := 1;
 
-      procedure GetMeasurements (Left, Right : out Distance_CM) is
-      begin
-         Left  := Left_Dist;
-         Right := Right_Dist;
-      end GetMeasurements;
+   -- Decision thresholds (in centimeters)
+   Obstacle_Threshold_cm : constant := 25;
+   Caution_Threshold_cm  : constant := 40;
 
-      function Last_Update return Ada.Real_Time.Time is
-      begin
-         return Update_Time;
-      end Last_Update;
-   end SensorData;
-end MyBrain;
+   -- Valid reading range for ultrasonic sensors
+   Min_Valid_Distance_cm : constant := 2;    -- below this likely noise
+   Max_Valid_Distance_cm : constant := 400;  -- sensor max range
+
+   -- Treat zero as invalid reading (typical for no echo)
+   Freshness_Timeout_ms : constant := 300;
+
+   -- Motor speeds (0..4095) - kept here for reference, Act uses directions only
+   Speed_Max    : constant := 4095;
+   Speed_Fast   : constant := 3200;
+   Speed_Medium : constant := 2600;
+   Speed_Slow   : constant := 2000;
+end Config;
